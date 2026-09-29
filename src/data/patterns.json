@@ -4,54 +4,129 @@
     "name_vi": "Hoa sen",
     "name_en": "Lotus",
     "name_ko": "연꽃",
-    "meaning_vi": "",
-    "meaning_en": "",
-    "meaning_ko": "",
-    "image_url": null,
-    "image_source": null,
-    "source": null,
-    "verified_at": null,
-    "description_vi": null,
-    "description_en": null,
-    "description_ko": null,
-    "origin": null,
-    "representative_works": null
+    "meaning_vi": "The Met liên hệ hoa sen trong mỹ thuật Trung Quốc với sự thanh tịnh trong Phật giáo.",
+    "meaning_en": "The Met connects the lotus in Chinese art with purity in Buddhism.",
+    "meaning_ko": "메트로폴리탄 미술관은 중국 미술의 연꽃을 불교의 청정함과 연결해 설명합니다.",
+    "image_url": "https://collectionapi.metmuseum.org/api/collection/v1/iiif/49855/1459555/main-image",
+    "image_source": {
+      "url": "https://www.metmuseum.org/art/collection/search/49855",
+      "license": "Public Domain — The Metropolitan Museum of Art"
+    },
+    "source": {
+      "organization": "The Metropolitan Museum of Art",
+      "title": "Flask with Lotus Pond",
+      "url": "https://www.metmuseum.org/art/collection/search/49855"
+    },
+    "verified_at": "2026-09-29",
+    "description_vi": "Hoa văn sen và ao sen, minh họa bằng bình sứ trang trí màu lam.",
+    "description_en": "Lotus and pond decoration, illustrated by a porcelain flask painted in blue.",
+    "description_ko": "연꽃과 연못을 나타낸 문양. 참고 소장품은 청색으로 장식된 자기 병입니다.",
+    "origin": {
+      "source": {
+        "organization": "The Metropolitan Museum of Art",
+        "title": "Flask with Lotus Pond",
+        "url": "https://www.metmuseum.org/art/collection/search/49855"
+      },
+      "text_ko": "중국의 14세기 중반 소장품 사례입니다. 현재 작품의 제작지나 문양의 최초 기원을 뜻하지 않습니다.",
+      "text_en": "This is a Chinese example from the mid-14th century, not evidence of this piece’s origin or the motif’s first use.",
+      "text_vi": "Đây là ví dụ Trung Quốc giữa thế kỷ 14, không xác định xuất xứ tác phẩm này hay lần đầu hoa văn xuất hiện."
+    },
+    "representative_works": [
+      {
+        "title": "Flask with Lotus Pond",
+        "holder": "The Metropolitan Museum of Art",
+        "date": "China · mid-14th century",
+        "source_url": "https://www.metmuseum.org/art/collection/search/49855"
+      }
+    ]
   },
   {
     "id": "P02",
     "name_vi": "Rồng",
     "name_en": "Dragon",
     "name_ko": "용",
-    "meaning_vi": "",
-    "meaning_en": "",
-    "meaning_ko": "",
-    "image_url": null,
-    "image_source": null,
-    "source": null,
-    "verified_at": null,
-    "description_vi": null,
-    "description_en": null,
-    "description_ko": null,
-    "origin": null,
-    "representative_works": null
+    "meaning_vi": "Bảo tàng Cleveland giải thích rồng trên bình này là biểu tượng của sự sinh sôi và quyền lực.",
+    "meaning_en": "Cleveland describes the dragon on this vase as a symbol of fertility and power.",
+    "meaning_ko": "클리블랜드 미술관은 이 소장품의 용을 풍요와 힘의 상징으로 설명합니다.",
+    "image_url": "https://collectionapi.metmuseum.org/api/collection/v1/iiif/50021/1797509/main-image",
+    "image_source": {
+      "url": "https://www.metmuseum.org/art/collection/search/50021",
+      "license": "Public Domain — The Metropolitan Museum of Art"
+    },
+    "source": {
+      "organization": "Cleveland Museum of Art",
+      "title": "Meiping Vase with carved Dragon Motif",
+      "url": "https://www.clevelandart.org/art/2020.189"
+    },
+    "verified_at": "2026-09-29",
+    "description_vi": "Rồng chạm khắc đuổi theo viên ngọc giữa mây và sương.",
+    "description_en": "A carved dragon pursuing a pearl among mist and clouds.",
+    "description_ko": "구름과 안개 사이에서 구슬을 쫓는 용을 새긴 문양.",
+    "origin": {
+      "source": {
+        "organization": "Cleveland Museum of Art",
+        "title": "Meiping Vase with carved Dragon Motif",
+        "url": "https://www.clevelandart.org/art/2020.189"
+      },
+      "text_ko": "중국 원대 청백자 소장품을 참고한 설명입니다. 모든 용 문양이나 베트남 도자기에 같은 의미를 단정하지 않습니다.",
+      "text_en": "The reference is a Chinese Yuan qingbai vase. Its interpretation does not establish a universal meaning for dragons or Vietnamese ceramics.",
+      "text_vi": "Tư liệu là bình thanh bạch thời Nguyên, Trung Quốc. Cách diễn giải này không áp dụng mặc định cho mọi hình rồng hay gốm Việt Nam."
+    },
+    "representative_works": [
+      {
+        "title": "Meiping Vase with carved Dragon Motif",
+        "holder": "Cleveland Museum of Art",
+        "date": "South China · 1300s, Yuan dynasty (1279–1368)",
+        "source_url": "https://www.clevelandart.org/art/2020.189"
+      },
+      {
+        "title": "Dish with Dragons and Lotuses",
+        "holder": "The Metropolitan Museum of Art",
+        "date": "China · early 16th century",
+        "source_url": "https://www.metmuseum.org/art/collection/search/50021"
+      }
+    ]
   },
   {
     "id": "P03",
     "name_vi": "Tre",
     "name_en": "Bamboo",
     "name_ko": "대나무",
-    "meaning_vi": "",
-    "meaning_en": "",
-    "meaning_ko": "",
-    "image_url": null,
-    "image_source": null,
-    "source": null,
-    "verified_at": null,
-    "description_vi": null,
-    "description_en": null,
-    "description_ko": null,
-    "origin": null,
-    "representative_works": null
+    "meaning_vi": "The Met diễn giải tre uốn cong mà không gãy dưới tuyết là biểu tượng của sức bền.",
+    "meaning_en": "The Met reads the bending, unbroken bamboo under snow as resilience.",
+    "meaning_ko": "메트로폴리탄 미술관은 눈의 무게에도 부러지지 않고 휘는 대나무를 회복력의 상징으로 설명합니다.",
+    "image_url": "https://collectionapi.metmuseum.org/api/collection/v1/iiif/748315/2173320/main-image",
+    "image_source": {
+      "url": "https://www.metmuseum.org/art/collection/search/748315",
+      "license": "Public Domain — The Metropolitan Museum of Art"
+    },
+    "source": {
+      "organization": "The Metropolitan Museum of Art",
+      "title": "Bowl with Handle (Tebachi) with Bamboo in Snow Pattern",
+      "url": "https://www.metmuseum.org/art/collection/search/748315"
+    },
+    "verified_at": "2026-09-29",
+    "description_vi": "Tre dưới tuyết; men trắng gợi tuyết trên chiếc bát tham khảo.",
+    "description_en": "Bamboo under snow; white glaze suggests snow on the reference bowl.",
+    "description_ko": "눈에 덮인 대나무를 표현한 문양. 참고 소장품에는 흰 유약으로 눈을 나타냈습니다.",
+    "origin": {
+      "source": {
+        "organization": "The Metropolitan Museum of Art",
+        "title": "Bowl with Handle (Tebachi) with Bamboo in Snow Pattern",
+        "url": "https://www.metmuseum.org/art/collection/search/748315"
+      },
+      "text_ko": "일본 교토 도자기, 19세기 전반의 다도용 그릇 사례입니다.",
+      "text_en": "The example is a Kyoto ceramic tea-ceremony bowl from early 19th-century Japan.",
+      "text_vi": "Ví dụ là bát dùng trong trà đạo, gốm Kyoto, Nhật Bản đầu thế kỷ 19."
+    },
+    "representative_works": [
+      {
+        "title": "Bowl with Handle (Tebachi) with Bamboo in Snow Pattern",
+        "holder": "The Metropolitan Museum of Art",
+        "date": "Japan · first half of the 19th century",
+        "source_url": "https://www.metmuseum.org/art/collection/search/748315"
+      }
+    ]
   },
   {
     "id": "P04",
@@ -76,18 +151,41 @@
     "name_vi": "Cá",
     "name_en": "Fish",
     "name_ko": "물고기",
-    "meaning_vi": "",
-    "meaning_en": "",
-    "meaning_ko": "",
-    "image_url": null,
-    "image_source": null,
-    "source": null,
-    "verified_at": null,
-    "description_vi": null,
-    "description_en": null,
-    "description_ko": null,
-    "origin": null,
-    "representative_works": null
+    "meaning_vi": "The Met giải thích ba con cá sinh động trên chiếc bát này có liên hệ gần với đồ gốm Long Tuyền thời Tống, cho thấy hoa văn được tiếp nhận qua giao lưu gốm sứ.",
+    "meaning_en": "The Met relates the bowl’s three playful fish to Longquan wares of the Song period, showing how the motif traveled through ceramic exchange.",
+    "meaning_ko": "메트로폴리탄 미술관은 이 그릇의 세 마리 물고기가 중국 송대 용천요 도자기와 밀접하다고 설명하며, 도자 교류를 통한 문양의 이동을 보여줍니다.",
+    "image_url": "https://collectionapi.metmuseum.org/api/collection/v1/iiif/451489/909527/main-image",
+    "image_source": {
+      "url": "https://www.metmuseum.org/art/collection/search/451489",
+      "license": "Public Domain — The Metropolitan Museum of Art"
+    },
+    "source": {
+      "organization": "The Metropolitan Museum of Art",
+      "title": "Bowl with Fish Motifs",
+      "url": "https://www.metmuseum.org/art/collection/search/451489"
+    },
+    "verified_at": "2026-09-29",
+    "description_vi": "Ba con cá nổi bơi quanh lòng bát dưới lớp men xanh.",
+    "description_en": "Three molded fish swim around the inside of a green-glazed bowl.",
+    "description_ko": "녹색 유약을 입힌 그릇 안쪽을 세 마리의 부조 물고기가 헤엄치는 문양.",
+    "origin": {
+      "source": {
+        "organization": "The Metropolitan Museum of Art",
+        "title": "Bowl with Fish Motifs",
+        "url": "https://www.metmuseum.org/art/collection/search/451489"
+      },
+      "text_ko": "14세기 전반 이란으로 추정되는 소장품 사례입니다. 현재 작품의 제작지나 모든 물고기 문양의 기원을 뜻하지 않습니다.",
+      "text_en": "The reference is attributed to Iran in the first half of the 14th century; it does not establish this piece’s origin or a universal origin for fish motifs.",
+      "text_vi": "Tư liệu được cho là làm tại Iran vào nửa đầu thế kỷ 14; không xác định xuất xứ tác phẩm này hay nguồn gốc chung của mọi hoa văn cá."
+    },
+    "representative_works": [
+      {
+        "title": "Bowl with Fish Motifs",
+        "holder": "The Metropolitan Museum of Art",
+        "date": "Attributed to Iran · first half of the 14th century",
+        "source_url": "https://www.metmuseum.org/art/collection/search/451489"
+      }
+    ]
   },
   {
     "id": "P06",
@@ -130,18 +228,41 @@
     "name_vi": "Hoa cúc",
     "name_en": "Chrysanthemum",
     "name_ko": "국화",
-    "meaning_vi": "",
-    "meaning_en": "",
-    "meaning_ko": "",
-    "image_url": null,
-    "image_source": null,
-    "source": null,
-    "verified_at": null,
-    "description_vi": null,
-    "description_en": null,
-    "description_ko": null,
-    "origin": null,
-    "representative_works": null
+    "meaning_vi": "The Met xác định hoa cúc là họa tiết khắc trên đồ sứ trắng thời Goryeo; nguồn này không gán một ý nghĩa biểu tượng chung cho hoa văn.",
+    "meaning_en": "The Met identifies chrysanthemum as an incised decoration on Goryeo white ware; the source does not assign a universal symbolic meaning to the motif.",
+    "meaning_ko": "메트로폴리탄 미술관은 국화를 고려시대 백자에 새긴 장식으로 확인합니다. 이 자료는 국화 문양에 보편적인 상징 의미를 부여하지 않습니다.",
+    "image_url": "https://collectionapi.metmuseum.org/api/collection/v1/iiif/52088/1466972/main-image",
+    "image_source": {
+      "url": "https://www.metmuseum.org/art/collection/search/52088",
+      "license": "Public Domain — The Metropolitan Museum of Art"
+    },
+    "source": {
+      "organization": "The Metropolitan Museum of Art",
+      "title": "Small bowl decorated with chrysanthemum",
+      "url": "https://www.metmuseum.org/art/collection/search/52088"
+    },
+    "verified_at": "2026-09-29",
+    "description_vi": "Hoa cúc được khắc chìm trên một chiếc bát sứ trắng nhỏ.",
+    "description_en": "Incised chrysanthemum decoration on a small white porcelain bowl.",
+    "description_ko": "작은 백자 잔 표면에 국화를 음각으로 새긴 문양.",
+    "origin": {
+      "source": {
+        "organization": "The Metropolitan Museum of Art",
+        "title": "Small bowl decorated with chrysanthemum",
+        "url": "https://www.metmuseum.org/art/collection/search/52088"
+      },
+      "text_ko": "한국 고려시대 12세기 백자 소장품 사례입니다. 현재 작품의 제작지나 국화 문양의 최초 기원을 뜻하지 않습니다.",
+      "text_en": "The reference is a 12th-century Korean white-porcelain bowl from the Goryeo dynasty, not evidence of this piece’s origin or the motif’s first use.",
+      "text_vi": "Tư liệu là bát sứ trắng Hàn Quốc thế kỷ 12, thời Goryeo; không xác định xuất xứ tác phẩm này hay lần đầu hoa văn xuất hiện."
+    },
+    "representative_works": [
+      {
+        "title": "Small bowl decorated with chrysanthemum",
+        "holder": "The Metropolitan Museum of Art",
+        "date": "Korea · 12th century, Goryeo dynasty",
+        "source_url": "https://www.metmuseum.org/art/collection/search/52088"
+      }
+    ]
   },
   {
     "id": "P09",

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { SpeechPlayer } from "@/components/SpeechPlayer";
 import { ContentEditor } from "@/components/ContentEditor";
 import { PublishExhibit } from "@/components/PublishExhibit";
 import { CopyButton } from "@/components/CopyButton";
@@ -17,7 +18,6 @@ const FIELD_LABELS: Record<Language, { title: string; short: string; full: strin
   vi: { title: "Tên sản phẩm", short: "Mô tả ngắn", full: "Mô tả sản phẩm" },
   en: { title: "Product name", short: "Short description", full: "Product description" },
   ko: { title: "상품명", short: "짧은 소개", full: "제품 설명" },
-  zh: { title: "作品名称", short: "简短介绍", full: "作品介绍" },
 };
 
 type TabKey = "product" | "story" | "culture" | "social";
@@ -120,15 +120,13 @@ export function ResultScreen({ patterns }: { patterns: PatternListItem[] }) {
   const tabs: { key: TabKey; label: string }[] = [
     { key: "product", label: copy.tabProduct },
     { key: "story", label: copy.tabStory },
-    ...(pattern ? [{ key: "culture" as TabKey, label: copy.tabCulture }] : []),
+    ...(pattern?.has_verified_culture ? [{ key: "culture" as TabKey, label: copy.tabCulture }] : []),
     { key: "social", label: copy.tabSocial },
   ];
 
   const labels = FIELD_LABELS[selectedContentLanguage];
   const meaning = pattern
-    ? selectedContentLanguage === "zh"
-      ? ""
-      : selectedContentLanguage === "ko"
+    ? selectedContentLanguage === "ko"
       ? pattern.meaning_ko
       : selectedContentLanguage === "en"
         ? pattern.meaning_en
@@ -249,10 +247,10 @@ export function ResultScreen({ patterns }: { patterns: PatternListItem[] }) {
                 </>
               ) : null}
 
-              {tab === "culture" && pattern ? (
+              {tab === "culture" && pattern?.has_verified_culture ? (
                 <section className="result-field">
                   <h2 className="text-body-lg font-semibold text-text-primary">
-                    {pattern.name_vi} · {pattern.name_en}
+                    {pattern[`name_${selectedContentLanguage}`]}
                   </h2>
                   {meaning.trim() !== "" ? (
                     <>
@@ -317,6 +315,21 @@ export function ResultScreen({ patterns }: { patterns: PatternListItem[] }) {
                 {copy.regenerate}
               </SecondaryButton>
             </div>
+          ) : null}
+
+          {!pending && content ? (
+            <SpeechPlayer
+              language={selectedContentLanguage}
+              text={
+                tab === "culture"
+                  ? meaning
+                  : tab === "social"
+                    ? content.socialPost
+                    : tab === "story"
+                      ? content.artisanStory
+                      : [content.productTitle, content.shortDescription, content.productDescription].join("\n\n")
+              }
+            />
           ) : null}
         </div>
       </div>

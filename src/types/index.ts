@@ -1,10 +1,10 @@
 /** 콘텐츠 언어 (DESIGN.md 23·26번 항목) */
-export const LANGUAGES = ["vi", "en", "ko", "zh"] as const;
+export const LANGUAGES = ["ko", "en", "vi"] as const;
 export type Language = (typeof LANGUAGES)[number];
 export const DEFAULT_LANGUAGE: Language = "vi";
 
 /** 앱 UI 언어. 콘텐츠 언어와 별개다. (DESIGN.md 26번 항목) */
-export const UI_LANGUAGES = ["vi", "ko"] as const;
+export const UI_LANGUAGES = ["vi", "en", "ko"] as const;
 export type UiLanguage = (typeof UI_LANGUAGES)[number];
 export const DEFAULT_UI_LANGUAGE: UiLanguage = "vi";
 
@@ -118,6 +118,7 @@ export type PatternListItem = {
   meaning_en: string;
   meaning_ko: string;
   image_url: string | null;
+  image_source?: PatternImageSource | null;
   source_url: string | null;
   /** 출처가 확인된 문화 정보가 있는지 (DEV.md 13번 항목) */
   has_verified_culture: boolean;

@@ -39,8 +39,11 @@ export function middleware(request: NextRequest) {
     });
   }
 
+  // A Secure cookie is dropped over plain HTTP, which breaks maker sign-in on a LAN demo.
+  // Hosting platforms terminate TLS and forward this header; a direct connection has none.
+  const https = request.headers.get("x-forwarded-proto") === "https";
   const response = NextResponse.next();
-  response.cookies.set("craft_maker", password, { httpOnly: true, secure: true, sameSite: "strict", path: "/" });
+  response.cookies.set("craft_maker", password, { httpOnly: true, secure: https, sameSite: "strict", path: "/" });
   return response;
 }
 

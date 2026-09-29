@@ -16,7 +16,8 @@ function load(file) {
  const patterns=load('src/lib/patterns.ts');
  const data=JSON.parse(fs.readFileSync('src/data/patterns.json','utf8'));
  assert.equal(patterns.getPatternList().length,20);
- assert(data.every(p=>p.origin===null&&p.representative_works===null));
+ assert.equal(data.filter(p=>p.source && p.origin && p.representative_works?.length).length,5);
+ for (const p of data.filter(p=>p.source)) for (const lang of ["ko","en","vi"]) { assert(p[`description_${lang}`]); assert(p[`meaning_${lang}`]); assert(p.origin[`text_${lang}`]); }
  const bad=structuredClone(data);bad[0].origin={text_ko:'test',text_vi:null,text_en:null,source:null};
  assert.throws(()=>patterns.validatePatterns(bad),/P01.origin/);
  bad[0].origin.source={organization:'Test',title:'Test',url:'javascript:alert(1)'};
@@ -28,7 +29,15 @@ function load(file) {
  const React=require('react');const {renderToStaticMarkup}=require('react-dom/server');
  const {PatternSelector}=load('src/components/PatternSelector.tsx');const {copyFor}=load('src/lib/copy.ts');
  const html=renderToStaticMarkup(React.createElement(PatternSelector,{copy:copyFor('ko'),uiLanguage:'ko',patterns:patterns.getPatternList(),candidates:[{patternId:'P01',confidence:'high'},{patternId:'P02',confidence:'medium'},{patternId:'P03',confidence:'low'},{patternId:'NONE',confidence:'low'}],value:null,onChange:()=>{}}));
- assert(html.includes('확신 낮음'));assert(html.includes('대나무'));assert(html.includes('출처 있는 참고 자료가 아직 없습니다'));assert.equal((html.match(/role="radio"/g)||[]).length,4);
+ assert(html.includes('확신 낮음'));assert(html.includes('대나무'));assert(html.includes('collectionapi.metmuseum.org'));assert(!html.includes('Hoa sen'));assert(!html.includes('출처 있는 참고 자료가 아직 없습니다'));assert.equal((html.match(/role="radio"/g)||[]).length,4);
+ const {SpeechPlayer}=load('src/components/SpeechPlayer.tsx');
+ const speech=renderToStaticMarkup(React.createElement(SpeechPlayer,{language:'ko',text:'테스트 작품 이야기'}));
+ assert(speech.includes('음성으로 듣기'));assert(speech.includes('읽어주기'));assert(speech.includes('disabled'));
+ const {TranslatedObservation}=load('src/components/TranslatedObservation.tsx');
+ const observation={shape:'Bình cổ cao',surface_and_glaze:'Men bóng',decoration_layout:'Quanh thân',decoration_elements:[],composition:'Cân đối'};
+ const observationVi=renderToStaticMarkup(React.createElement(TranslatedObservation,{language:'vi',observation}));
+ const observationKo=renderToStaticMarkup(React.createElement(TranslatedObservation,{language:'ko',observation}));
+ assert(observationVi.includes('Bình cổ cao'));assert(observationKo.includes('관찰 본문은 한국어·베트남어·영어로'));assert(observationKo.includes('한국어로 번역하고 있어요'));assert(!observationKo.includes('Bình cổ cao'));
  const store=load('src/lib/exhibits.ts');const input=load('src/lib/exhibitInput.ts');
  assert.throws(()=>input.parseExhibitInput({}),/INVALID/);
  const content={vi:{productTitle:'Test',shortDescription:'Short',productDescription:'Description',artisanStory:'',socialPost:'Social'}};
@@ -39,5 +48,5 @@ function load(file) {
  assert(!('tokenHash' in store.publicExhibit(record)));assert(!('token' in store.publicExhibit(record)));
  payload.content.vi.productTitle='Updated';await store.updateExhibit(record,payload);
  assert.equal((await store.readExhibit(created.id)).content.vi.productTitle,'Updated');
- console.log('PASS: 20 null reference records, missing/unsafe source rejected, strict nested schema, input validation, edit authorization, public credential exclusion, persistent updates');
+ console.log('PASS: 20 motifs with 5 sourced trilingual records, missing/unsafe source rejected, strict nested schema, input validation, edit authorization, public credential exclusion, persistent updates');
 })().catch(e=>{console.error(e);process.exitCode=1});

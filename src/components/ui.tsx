@@ -53,7 +53,7 @@ export function ScreenHeader({
   right?: ReactNode;
 }) {
   const pathname = usePathname();
-  const { uiLanguage } = useSession();
+  const { uiLanguage, setUiLanguage } = useSession();
   const copy = copyFor(uiLanguage);
   const active = pathname === "/result" ? 3 : pathname === "/story" ? 2 : pathname === "/verify" || pathname === "/analyze" ? 1 : 0;
   const steps = [copy.photoStep, copy.verifyStep, copy.storyStep, copy.resultStep];
@@ -76,7 +76,8 @@ export function ScreenHeader({
         )}
         {right}
       </div>
-      <ol className="step-track" aria-label={uiLanguage === "ko" ? "작업 단계" : "Các bước"}>
+      <div className="flex justify-end pt-2"><select aria-label="Language / 언어 / Ngôn ngữ" value={uiLanguage} onChange={event => setUiLanguage(event.target.value as import("@/types").UiLanguage)} className="h-11 rounded-xl border border-line bg-surface px-3 text-caption"><option value="ko">한국어</option><option value="en">English</option><option value="vi">Tiếng Việt</option></select></div>
+      <ol className="step-track" aria-label={uiLanguage === "ko" ? "작업 단계" : uiLanguage === "en" ? "Steps" : "Các bước"}>
         {steps.map((step, index) => (
           <li key={step} aria-current={index === active ? "step" : undefined} className={index <= active ? "is-active" : ""}>
             <span>{index < active ? "✓" : `0${index + 1}`}</span>{step}

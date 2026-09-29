@@ -19,7 +19,12 @@ import type {
   UiLanguage,
   VisualFeatureId,
 } from "@/types";
-import { DEFAULT_LANGUAGE, DEFAULT_UI_LANGUAGE } from "@/types";
+import {
+  DEFAULT_LANGUAGE,
+  DEFAULT_UI_LANGUAGE,
+  isLanguage,
+  UI_LANGUAGES,
+} from "@/types";
 
 const STORAGE_KEY = "ai-pottery-story:session";
 
@@ -96,7 +101,18 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     try {
       const stored = sessionStorage.getItem(STORAGE_KEY);
       if (stored) {
-        setState({ ...EMPTY_STATE, ...(JSON.parse(stored) as Partial<SessionState>) });
+        const parsed = JSON.parse(stored) as Partial<SessionState>;
+        const uiLanguage = UI_LANGUAGES.includes(parsed.uiLanguage as UiLanguage)
+          ? parsed.uiLanguage as UiLanguage
+          : DEFAULT_UI_LANGUAGE;
+        setState({
+          ...EMPTY_STATE,
+          ...parsed,
+          uiLanguage,
+          selectedContentLanguage: isLanguage(parsed.selectedContentLanguage)
+            ? parsed.selectedContentLanguage
+            : uiLanguage,
+        });
       }
     } catch {
       // 저장값이 깨졌으면 빈 상태로 시작한다.
@@ -106,6 +122,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!hydrated) return;
+    document.documentElement.lang = state.uiLanguage;
     try {
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch {
@@ -198,7 +215,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setUiLanguage = useCallback((uiLanguage: UiLanguage) => {
-    setState((prev) => ({ ...prev, uiLanguage }));
+    setState((prev) => ({ ...prev, uiLanguage, selectedContentLanguage: uiLanguage }));
   }, []);
 
   const cacheContent = useCallback((language: Language, content: GeneratedContent) => {

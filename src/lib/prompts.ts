@@ -140,7 +140,6 @@ const LANGUAGE_NAMES: Record<Language, string> = {
   vi: "Vietnamese",
   en: "English",
   ko: "Korean",
-  zh: "Simplified Chinese",
 };
 
 /** DEV.md 21번 항목 — 콘텐츠 생성 핵심 Prompt */

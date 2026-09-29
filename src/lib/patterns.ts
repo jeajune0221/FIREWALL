@@ -60,6 +60,7 @@ function toPatternListItem(pattern: Pattern): PatternListItem {
     meaning_en: pattern.meaning_en,
     meaning_ko: pattern.meaning_ko,
     image_url: pattern.image_url,
+    image_source: pattern.image_source,
     source_url: hasSource(pattern.source) ? pattern.source.url : null,
     has_verified_culture: hasVerifiedCulture(pattern),
   };
@@ -90,7 +91,7 @@ export function getPatternForGeneration(patternId: string, language: Language) {
   if (!pattern) return null;
   return {
     pattern_id: pattern.id,
-    pattern_name: pattern[`name_${language === "zh" ? "en" : language}`] || pattern.name_vi,
+    pattern_name: pattern[`name_${language}`] || pattern.name_vi,
     pattern_name_vi: pattern.name_vi,
   };
 }

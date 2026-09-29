@@ -10,7 +10,7 @@ import { useSession } from "@/lib/session";
 
 export default function UploadPage() {
   const router = useRouter();
-  const { uiLanguage, setUiLanguage, previewUrl, setPreview, setImageId, imageId } =
+  const { uiLanguage, previewUrl, setPreview, setImageId, imageId } =
     useSession();
   const copy = copyFor(uiLanguage);
   const [uploading, setUploading] = useState(false);
@@ -37,17 +37,7 @@ export default function UploadPage() {
 
   return (
     <main className="flex flex-1 flex-col">
-      <ScreenHeader
-        right={
-          <button
-            type="button"
-            onClick={() => setUiLanguage(uiLanguage === "vi" ? "ko" : "vi")}
-            className="h-11 rounded-full border border-line bg-surface px-3 text-caption font-medium text-text-secondary"
-          >
-            {copy.uiLanguageToggle}
-          </button>
-        }
-      />
+      <ScreenHeader />
 
       <div className="flex flex-1 flex-col px-5">
         <div className="upload-intro">

@@ -28,9 +28,9 @@ const vi = {
   observationsTitle: "AI quan sát từ ảnh",
   referencesTitle: "Tài liệu tham khảo có nguồn",
   noReference: "Chưa có tài liệu tham khảo có nguồn.",
-  descriptionLabel: "Mô tả hoa văn", originLabel: "Nguồn gốc", worksLabel: "Tác phẩm tham khảo",
+  descriptionLabel: "Mô tả hoa văn", originLabel: "Bối cảnh lịch sử", worksLabel: "Tác phẩm tham khảo",
   shapeLabel: "Hình dáng", surfaceLabel: "Bề mặt và men", layoutLabel: "Vị trí trang trí", elementsLabel: "Chi tiết trang trí", compositionLabel: "Bố cục",
-  observationLimit: "Chỉ mô tả những gì nhìn thấy. Không xác định niên đại, lò gốm, xuất xứ hay tính xác thực. ‘not visible’ nghĩa là không quan sát được từ ảnh.",
+  observationLimit: "Chỉ mô tả những gì nhìn thấy. Không xác định niên đại, lò gốm, xuất xứ hay tính xác thực. ‘not visible’ nghĩa là không quan sát được từ ảnh. Có thể xem nội dung quan sát bằng tiếng Hàn, tiếng Việt hoặc tiếng Anh.",
   confidenceLow: "AI dự đoán · Độ tin cậy thấp",
   back: "Quay lại",
 
@@ -155,9 +155,9 @@ const ko: CopyDict = {
   observationsTitle: "AI가 사진에서 관찰한 것",
   referencesTitle: "참고 자료(출처 있음)",
   noReference: "출처 있는 참고 자료가 아직 없습니다",
-  descriptionLabel: "문양 설명", originLabel: "유래", worksLabel: "대표작 참고",
+  descriptionLabel: "문양 설명", originLabel: "역사적 사례", worksLabel: "대표작 참고",
   shapeLabel: "전체 형태", surfaceLabel: "유약과 표면", layoutLabel: "장식 위치", elementsLabel: "장식 요소", compositionLabel: "문양 구성",
-  observationLimit: "사진에 보이는 모습만 설명합니다. 시대·가마·원산지·진품 여부는 판단하지 않습니다. ‘not visible’은 사진에서 확인할 수 없다는 뜻입니다. 관찰 본문은 베트남어로 제공됩니다.",
+  observationLimit: "사진에 보이는 모습만 설명합니다. 시대·가마·원산지·진품 여부는 판단하지 않습니다. ‘not visible’은 사진에서 확인할 수 없다는 뜻입니다. 관찰 본문은 한국어·베트남어·영어로 바꿔 볼 수 있습니다.",
   confidenceLow: "AI 추정 · 확신 낮음",
   back: "이전 단계로",
 
@@ -253,7 +253,35 @@ const ko: CopyDict = {
   apiKeyMissing: "현재 AI 서비스가 연결되지 않았어요. 잠시 후 다시 시도하거나 관리자에게 문의해주세요.",
 };
 
-const COPY: Record<UiLanguage, CopyDict> = { vi, ko };
+
+const en: CopyDict = {
+ studioLabel: "One product. One maker. One story.",
+ uploadIntro: "Turn a photo and your own words into a story. Review it and share your piece with a QR code.",
+ photoStep: "Photo", verifyStep: "Review", storyStep: "Story", resultStep: "Result",
+ photoTitle: "Start with one piece", photoBody: "Choose a clear photo showing the whole shape and decoration against a simple background.",
+ photoTips: "One piece · Good lighting · No filters", uploadNext: "Next, review and correct the features found by AI.", uploadingImage: "Uploading photo…",
+ verifyIntro: "These are suggestions from the photo. Compare them with your piece and correct any mistakes below.",
+ patternIntro: "AI suggests motifs from visible shapes. Select one you recognize, or choose ‘None / unknown’ if unsure.",
+ storyIntro: "Share your inspiration, a memory, or a detail you want buyers to know. AI only edits the information you provide.",
+ storyHelp: "You can leave this blank. The content will describe confirmed features without inventing a story.", storyPrompt: "What inspired you to make this piece?",
+ resultHelp: "Choose a language, review the product description, story, or social post, then copy what you need.",
+ typeHelp: "Choose the actual shape. Keep ‘Unknown’ if the photo is unclear.", colorHelp: "Choose up to 3 colors on the piece, excluding the background and shadows.",
+ featureHelp: "Use × to remove incorrect features. A photo cannot confirm materials or manufacturing techniques.",
+ productHelp: "Use the title for a listing, the short description for a label, and the full description for a product page.",
+ socialHelp: "A short post for Facebook or Instagram. Check the facts before posting.", storyResultHelp: "Compare the original and edited versions. Inspiration and experiences must match your account.",
+ cultureHelp: "Reference information about the motif; it does not establish this piece’s origin or age.",
+ observationsTitle: "What AI observed in the photo", referencesTitle: "Sourced references", noReference: "No sourced reference material is available yet.",
+ descriptionLabel: "Motif description", originLabel: "Historical context", worksLabel: "Reference works", shapeLabel: "Overall shape", surfaceLabel: "Surface and glaze", layoutLabel: "Decoration placement", elementsLabel: "Decorative elements", compositionLabel: "Composition",
+ observationLimit: "Describes visible features only, without determining age, kiln, origin, or authenticity. ‘not visible’ means the photo does not show enough detail. Observations are available in Korean, Vietnamese, and English.", confidenceLow: "AI suggestion · Low confidence", back: "Back",
+ uploadHeading: "Every piece,\na story to share.", uploadHint: "Take a well-lit photo showing the entire piece.", takePhoto: "Take a photo", chooseFromGallery: "Choose from gallery", retakePhoto: "Retake photo", changePhoto: "Change photo", startAnalysis: "Analyze photo", supportedFormats: "JPG · PNG · WEBP / HEIC support varies by browser", unsupportedType: "Choose a JPG, PNG, WEBP, or HEIC image.", imageDecodeFailed: "Could not read this image. Try another photo.", preparingImage: "Preparing photo…", uiLanguageToggle: "Language",
+ analyzingTitle: "Looking at your piece.", analyzingBody: "Analyzing the shape, colors, visible features, and possible motifs.", analyzeFailed: "Could not analyze the photo.", chooseAnotherPhoto: "Choose another photo",
+ observationHeading: "Analysis results", productType: "Product type", mainColors: "Main colors", addColor: "+ Add color", visualFeatures: "Visible features", removeItem: "Remove", noFeatures: "No features selected.",
+ patternHeading: "Which motif is this?", patternSelectHint: "Select a motif to continue.", noPattern: "None / unknown", confidenceHigh: "AI suggestion · Likely match", confidenceMedium: "AI suggestion · Check the details", allLowTitle: "No confident motif match was found.", noCandidatesTitle: "AI found no matching motif in the registered list.", showAllPatterns: "Show all motifs", patternDetail: "Details", patternMeaningTitle: "Cultural meaning", patternNoCulture: "No verified cultural information is available yet.", patternSource: "Source", close: "Close", continueConfirmed: "Confirm and continue", freeInputNotice: "Choose from the registered list. If nothing matches, select ‘None / unknown’.",
+ storyHeading: "Tell us about this piece.", storyTabText: "Type", storyTabVoice: "Record your voice", storyPlaceholder: "Example: I made this piece while remembering the lotus flowers in my childhood village pond.", storyTooLong: "The story exceeds 1,000 characters.", createContent: "Create content", recordStart: "Start recording", recordMax: "Up to 60 seconds", recording: "Recording", recordStop: "Stop recording", transcribing: "Transcribing your voice…", sttHeard: "Here is what AI heard.", recordAgain: "Record again", useThisText: "Use this text", appendAfter: "Add to the end", replaceExisting: "Replace existing text", cancel: "Cancel", micError: "Recording may be restricted in this browser.", micHelp: "Open this page in Chrome or Safari instead of an in-app browser.", micHelpButton: "How to open in a browser", typeInstead: "Type instead", sttFailed: "Could not transcribe the recording.", voiceOptional: "Voice input is optional. You can create content by typing.",
+ resultNoticeTitle: "Your piece’s introduction is ready.", resultNoticeBody: "AI edited this content. Check the facts and wording before copying.", tabProduct: "Product", tabStory: "Story", tabCulture: "Culture", tabSocial: "Social", storyOriginal: "Artisan’s original words", storyPolished: "Story edited by AI", storyEmpty: "No artisan story was provided.", cultureFromDb: "From the sourced motif reference collection.", copy: "Copy", copyAll: "Copy all", copied: "✓ Copied", copyFailed: "Could not copy automatically. Select the text to copy it.", generating: "Preparing your piece’s story…", generateFailed: "Could not generate the content.", retry: "Try again", editPattern: "Edit motif", editStory: "Edit story", regenerate: "Regenerate", apiKeyMissing: "The AI service is unavailable. Try again later or contact the administrator.",
+};
+
+const COPY: Record<UiLanguage, CopyDict> = { vi, ko, en };
 
 export function copyFor(language: UiLanguage): CopyDict {
   return COPY[language];

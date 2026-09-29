@@ -33,7 +33,7 @@ export function label(
   language: Language | UiLanguage,
 ): string {
   if (!term) return "";
-  return (language === "en" || language === "zh") ? term.en : language === "ko" ? term.ko : term.vi;
+  return language === "en" ? term.en : language === "ko" ? term.ko : term.vi;
 }
 
 export function productTypeLabel(

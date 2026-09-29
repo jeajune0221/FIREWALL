@@ -12,36 +12,38 @@ import { PatternReferences } from "@/components/PatternReferences";
 import { NO_PATTERN } from "@/types";
 
 function patternName(pattern: PatternListItem, language: UiLanguage) {
-  return language === "ko" ? pattern.name_ko : pattern.name_vi;
+  return pattern[`name_${language}`];
 }
 
-function patternSubName(pattern: PatternListItem, language: UiLanguage) {
-  return language === "ko" ? pattern.name_vi : pattern.name_en;
-}
-
-function meaningFor(pattern: PatternListItem, language: UiLanguage) {
-  return language === "ko" ? pattern.meaning_ko : pattern.meaning_vi;
-}
+const motifGlyphs: Record<string, string> = {
+  P01: "🪷", P02: "🐉", P03: "🎋", P04: "☁", P05: "🐟",
+  P06: "🕊", P07: "𓅃", P08: "✿", P09: "❀", P10: "🌲",
+  P11: "♧", P12: "〰", P13: "🦚", P14: "🐢", P15: "◇",
+  P16: "◆", P17: "壽", P18: "⌁", P19: "🌾", P20: "𓆦",
+};
 
 /** DESIGN.md 14번 항목 — 썸네일. image_url이 없으면 중립 자리표시자. */
 function Thumbnail({ pattern }: { pattern: PatternListItem }) {
-  if (pattern.image_url) {
+  const [failed, setFailed] = useState(false);
+  if (pattern.image_url && !failed) {
     // eslint-disable-next-line @next/next/no-img-element
     return (
       <img
         src={pattern.image_url}
+        loading="lazy"
+        onError={() => setFailed(true)}
         alt=""
         className="h-14 w-14 shrink-0 rounded-[10px] border border-line object-cover"
       />
     );
   }
-  // No image is available: show a neutral placeholder, never a fabricated motif.
+  // 출처 이미지가 없는 항목은 실제 유물처럼 보이지 않는 상징 아이콘으로 구분한다.
   return (
     <span
       aria-hidden
-      className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[10px] border border-line bg-background text-caption font-semibold text-text-secondary"
+      className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[10px] border border-line bg-background text-2xl font-semibold text-primary"
     >
-      ◇
+      {motifGlyphs[pattern.id] ?? "◇"}
     </span>
   );
 }
@@ -65,8 +67,6 @@ function PatternDetailSheet({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const meaning = meaningFor(pattern, uiLanguage).trim();
-
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center">
       {/* 배경 탭으로도 닫히지만, 접근성 이름은 아래 닫기 버튼 하나만 갖는다. */}
@@ -87,35 +87,12 @@ function PatternDetailSheet({
             <p className="text-h2 text-text-primary">
               {patternName(pattern, uiLanguage)}
             </p>
-            <p className="text-body text-text-secondary">
-              {patternSubName(pattern, uiLanguage)}
-            </p>
           </div>
         </div>
 
-        <h3 className="pb-1 pt-5 text-caption font-medium text-text-secondary">
-          {copy.patternMeaningTitle}
-        </h3>
-        {/* 문화 정보는 Pattern DB 값을 그대로 보여준다. (DESIGN.md 21번 항목) */}
-        {meaning !== "" ? (
-          <p className="whitespace-pre-line text-body text-text-primary">{meaning}</p>
-        ) : (
-          <p className="text-body text-text-secondary">{copy.patternNoCulture}</p>
-        )}
-
-        {pattern.source_url ? (
-          <p className="pt-4 text-caption text-text-secondary">
-            {copy.patternSource}:{" "}
-            <a
-              href={pattern.source_url}
-              target="_blank"
-              rel="noreferrer"
-              className="underline"
-            >
-              {pattern.source_url}
-            </a>
-          </p>
-        ) : null}
+        <div className="-mx-5 mt-5">
+          <PatternReferences pattern={pattern} language={uiLanguage} copy={copy} />
+        </div>
 
         <button
           type="button"
@@ -138,9 +115,7 @@ function PatternCard({
   onDetail,
   detailLabel,
   uiLanguage,
-  copy,
 }: {
-  copy: CopyDict;
   pattern: PatternListItem;
   confidenceLabel?: string;
   confidenceTone?: "high" | "medium";
@@ -168,9 +143,6 @@ function PatternCard({
           <span className="block truncate text-body-lg font-semibold text-text-primary">
             {patternName(pattern, uiLanguage)}
           </span>
-          <span className="block truncate text-body text-text-secondary">
-            {patternSubName(pattern, uiLanguage)}
-          </span>
           {confidenceLabel ? (
             <span
               className={`mt-1 inline-block text-caption ${
@@ -190,8 +162,7 @@ function PatternCard({
           {selected ? <span className="h-2.5 w-2.5 rounded-full bg-primary" /> : null}
         </span>
       </button>
-      <PatternReferences pattern={pattern} language={uiLanguage} copy={copy} />
-      <div className="border-t border-line">
+      {pattern.has_verified_culture ? <div className="border-t border-line">
         <button
           type="button"
           onClick={onDetail}
@@ -199,7 +170,7 @@ function PatternCard({
         >
           {detailLabel} ›
         </button>
-      </div>
+      </div> : null}
     </div>
   );
 }
@@ -255,7 +226,6 @@ export function PatternSelector({
         if (!pattern) return null;
         return (
           <PatternCard
-            copy={copy}
             key={candidate.patternId}
             pattern={pattern}
             uiLanguage={uiLanguage}
@@ -283,7 +253,6 @@ export function PatternSelector({
             .filter((pattern) => !shown.some((c) => c.patternId === pattern.id))
             .map((pattern) => (
               <PatternCard
-            copy={copy}
                 key={pattern.id}
                 pattern={pattern}
                 uiLanguage={uiLanguage}
