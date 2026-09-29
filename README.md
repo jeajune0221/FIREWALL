@@ -79,10 +79,11 @@ AI 이미지 분석
 (음성 또는 텍스트)
         ↓
 AI 콘텐츠 생성
+(선택한 언어로 직접 생성, 번역 후처리 아님)
         ↓
 판매용 설명 / SNS / 매장용 콘텐츠
         ↓
-vi / en / ko 변환
+vi / en / ko 중 선택 → 해당 언어로 재생성
         ↓
 복사하여 원하는 플랫폼에 사용
 ```
@@ -286,7 +287,7 @@ MVP 지원 언어:
 
 5개 이상의 언어를 지원하지 않고, 팀원이 직접 결과를 검수할 수 있는 언어만 우선 지원한다.
 
-AI는 단순 직역보다 외국인이 이해할 수 있는 표현으로 변환한다.
+콘텐츠를 한 번 생성한 뒤 번역하는 방식이 아니라, 생성 요청에 `target_language`를 넣어 해당 언어로 직접 생성한다. 그래서 단순 직역투가 아니라 외국인이 자연스럽게 이해할 수 있는 표현이 나온다. (자세한 동작은 `DEV.md` 26번 항목 참고)
 
 ---
 
@@ -344,12 +345,13 @@ USER VALIDATION
 Verified Pattern
  +
 Craftsman's Story
+ +
+Target Language (vi/en/ko)
  ↓
 AI Content Generation
+(해당 언어로 직접 생성)
  ↓
 Platform Formatting
- ↓
-Translation
  ↓
 Final Content
 ```
@@ -403,17 +405,15 @@ Craftsman's Story
 
 ---
 
-## ④ Translation
+## ④ 다국어 생성
 
-완성된 설명을
+번역을 별도 후처리로 수행하지 않는다. 콘텐츠 생성 요청에 `target_language`를 함께 전달해 처음부터 해당 언어로 직접 생성한다.
 
 ```text
-Vietnamese
-English
-Korean
+target_language: vi | en | ko
 ```
 
-으로 변환한다.
+결과 화면에서 다른 언어 버튼을 누르면, 이미 생성된 텍스트를 번역하는 것이 아니라 동일한 검증 데이터로 `target_language`만 바꿔 생성 API를 다시 호출한다.
 
 ---
 

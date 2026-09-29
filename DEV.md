@@ -189,89 +189,43 @@ NONE
 
 # 7. Vision Output Schema
 
-Structured Output을 사용한다.
+기존 ID 필드는 유지하고 관찰 전용 필드를 추가한다. 응답에는 서버의 `image_id`도 포함한다.
 
 ```json
 {
-  "product_type": "vase",
-  "main_colors": [
-    "blue",
-    "white"
-  ],
-  "visual_features": [
-    "floral decoration",
-    "symmetrical pattern"
-  ],
-  "pattern_candidates": [
-    {
-      "pattern_id": "P01",
-      "confidence": "high"
-    }
-  ]
+  "image_id": "서버에서 생성한 UUID",
+  "product_type": "VASE",
+  "main_colors": ["BLUE", "WHITE"],
+  "visual_features": ["FLORAL_DECORATION"],
+  "pattern_candidates": [{ "pattern_id": "P01", "confidence": "medium" }],
+  "shape": "Thân phình, cổ hẹp",
+  "surface_and_glaze": "not visible",
+  "decoration_layout": "Hoa văn ở giữa thân",
+  "decoration_elements": [{ "description": "Hoa nhiều cánh", "location": "Giữa thân" }],
+  "composition": "not visible"
 }
 ```
+
+새 관찰 본문은 베트남어다. 문자열을 관찰할 수 없으면 정확히 `"not visible"`, 장식 요소를 볼 수 없으면 `decoration_elements: []`다. 사진으로 시대·가마·원산지·진위·제작 의도·문화적 의미를 판단하지 않는다. 상세 관찰은 확인 화면에 표시하며, 콘텐츠 생성 입력에는 자동으로 추가하지 않는다.
 
 ---
 
 # 8. JSON Schema
 
-```json
-{
-  "type": "object",
-  "properties": {
-    "product_type": {
-      "type": "string"
-    },
+구현: `src/lib/prompts.ts`의 `VISION_JSON_SCHEMA`와 `buildVisionJsonSchema(patternIds)`.
+최종 스키마는 DB의 모든 ID와 `NONE`으로 `pattern_id.enum`을 동적으로 만든다.
 
-    "main_colors": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
+- 최상위 필수 필드: `product_type`, `main_colors`, `visual_features`, `pattern_candidates`, `shape`, `surface_and_glaze`, `decoration_layout`, `decoration_elements`, `composition`.
+- `decoration_elements`는 `{ description: string, location: string }[]`.
+- `pattern_candidates`는 `{ pattern_id: enum, confidence: "high" | "medium" | "low" }[]`.
+- 모든 object는 모든 속성을 `required`에 포함하고 `additionalProperties: false`를 지정한다.
+- 기존 종류·색상·특징은 `src/types/index.ts`의 ID enum을 사용한다.
+- Responses API는 `text.format`에 `type: "json_schema"`, `name`, `schema`, `strict: true`를 형제 속성으로 둔다.
+- 분석 API는 한 번만 호출한다. 추가 AI 호출·검색·RAG는 없다.
+- `NONE` 후보와 모든 confidence를 응답 및 화면까지 보존한다. 후보는 기존 최대 3개다.
 
-    "visual_features": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-
-    "pattern_candidates": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "pattern_id": {
-            "type": "string"
-          },
-
-          "confidence": {
-            "type": "string",
-            "enum": [
-              "high",
-              "medium",
-              "low"
-            ]
-          }
-        },
-
-        "required": [
-          "pattern_id",
-          "confidence"
-        ]
-      }
-    }
-  },
-
-  "required": [
-    "product_type",
-    "main_colors",
-    "visual_features",
-    "pattern_candidates"
-  ]
-}
-```
+공식 근거: https://developers.openai.com/api/docs/guides/structured-outputs
+설치 SDK 확인: openai 6.49.0의 `ResponseFormatTextJSONSchemaConfig`.
 
 ---
 
@@ -305,11 +259,23 @@ unless explicitly visible or provided.
 5. visual_features must contain only observable features.
 
 6. When uncertain, use lower confidence instead of guessing.
+
+All new fields (shape, surface_and_glaze, decoration_layout,
+decoration_elements, composition) MUST describe only what is directly
+visible in the photo.
+Do not state or imply the object's age, kiln, origin, authenticity,
+artist intention, or cultural meaning.
+If a field cannot be determined from the photo, use the string "not visible".
+For decoration_elements, return [] if no elements can be observed.
+Prefer specific, concrete descriptions (position, quantity, form)
+over generic words like "beautiful" or "traditional".
 ```
 
 ---
 
 # 10. Screen 3 — 문양 확인
+
+사진 썸네일과 “AI가 사진에서 관찰한 것” 영역을 먼저 표시한다. 각 후보 카드에는 confidence와 DB의 description, meaning, origin, representative_works, 출처를 별도 참고 자료 영역에 표시한다. 빈 항목은 “출처 있는 참고 자료가 아직 없습니다”로 표시한다. Low 후보를 숨기지 않으며 단일 선택·전체 목록·해당 없음 동작을 유지한다.
 
 Vision 결과를 바로 콘텐츠 생성으로 넘기지 않는다.
 
@@ -407,7 +373,9 @@ MVP에서는 약 **10~20개 문양**만 준비한다.
     "url": "..."
   },
 
-  "verified_at": "2026-09-29"
+  "verified_at": null,
+  "origin": null,
+  "representative_works": null
 }
 ```
 
@@ -424,6 +392,12 @@ MVP에서는 약 **10~20개 문양**만 준비한다.
 가 존재해야 한다.
 
 출처 없는 문화 설명은 DB에 넣지 않는다.
+
+`origin`은 null 또는 `{ text_vi, text_en, text_ko, source: { organization, title, url } }`이다. 텍스트는 string 또는 null이다.
+`representative_works`는 null 또는 `{ title, holder, date, source_url }[]`이다.
+`description_vi/en/ko`는 string 또는 null이다. 현재 새 자료는 모두 null이며 AI로 채우지 않는다.
+
+`src/lib/patterns.ts`가 모듈 로딩 시 검증한다. 유래 텍스트가 있는데 source.url이 없거나 HTTP(S) URL이 아니면 `PATTERN_SOURCE_REQUIRED` 오류를 낸다. description/meaning 및 대표작도 출처 URL을 검증한다. 확인 화면은 기존 서버 페이지의 `getPatternList()`로 자료를 받으므로 추가 endpoint 호출이 필요 없다.
 
 ---
 
@@ -573,33 +547,43 @@ AI가 다음과 같이 인식했습니다.
 
 # 20. Generation Input
 
+아래는 백엔드가 Pattern DB를 조회한 뒤 **LLM Prompt에 실제로 넣는 데이터**의 형태다. 프론트엔드가 보내는 HTTP 요청 형식은 29번 항목의 `/api/generate-content` Input(간단히 `confirmed_pattern_id`만 전달)을 참고한다. 즉 흐름은 다음과 같다.
+
+```text
+Frontend → confirmed_pattern_id 전송 (29번 항목)
+   ↓
+Backend → Pattern DB에서 해당 ID 조회
+   ↓
+Backend → 조회한 pattern 전체 정보로 아래 형태의 Prompt Input 구성 (이 항목)
+```
+
 예:
 
 ```json
 {
   "product": {
-    "type": "vase",
+    "type": "VASE",
 
     "colors": [
-      "blue",
-      "white"
+      "BLUE",
+      "WHITE"
     ],
 
     "visual_features": [
-      "floral decoration",
-      "symmetrical pattern"
+      "FLORAL_DECORATION",
+      "SYMMETRICAL_PATTERN"
     ]
   },
 
   "pattern": {
     "name": "Hoa sen",
 
-    "meaning": "DB에서 가져온 설명",
-
-    "source": "..."
+    "pattern_id": "P01"
   },
 
-  "artisan_story": "어릴 때 마을 연못에서 본 연꽃을 생각하며 만든 작품입니다."
+  "artisan_story": "어릴 때 마을 연못에서 본 연꽃을 생각하며 만든 작품입니다.",
+
+  "target_language": "ko"
 }
 ```
 
@@ -673,8 +657,6 @@ historical significance, rarity, or traditional status.
 
   "artisan_story": "",
 
-  "cultural_note": "",
-
   "social_post": ""
 }
 ```
@@ -721,7 +703,7 @@ Blue Lotus Ceramic Vase
 
 ## cultural_note
 
-Pattern Database에서 제공한 문화적 정보만 사용한다.
+문화 설명은 생성 API 필드가 아니다. 서버에서 출처를 검증한 Pattern Database 값을 문화 탭과 참고 자료 영역에 직접 표시한다.
 
 ---
 
@@ -742,8 +724,6 @@ Facebook / Instagram 등에 사용할 수 있는 짧은 홍보글.
   "product_description": "string",
 
   "artisan_story": "string",
-
-  "cultural_note": "string",
 
   "social_post": "string"
 }
@@ -790,6 +770,14 @@ target_language
 ```
 
 그러면 동일한 검증 데이터를 기반으로 해당 언어 콘텐츠를 생성한다.
+
+### 언어 전환 동작 (명확화)
+
+결과 화면 하단의 `VI | EN | KO` 버튼은 이미 생성된 텍스트를 번역하는 것이 아니다.
+
+버튼을 누르면 같은 검증 데이터(Vision 관찰 + 확정 Pattern + Artisan Story)로 `target_language`만 바꿔서 `POST /api/generate-content`를 다시 호출한다.
+
+기본 언어(최초 생성 시 target_language)는 **Vietnamese(vi)**로 한다. 장인이 결과를 가장 먼저 확인해야 하는 언어이기 때문이다.
 
 ---
 
@@ -874,17 +862,27 @@ POST /api/analyze-product
 ```text
 multipart/form-data
 
-image
+image 또는 먼저 업로드한 image_id
 ```
 
 ### Output
 
 ```json
 {
-  "product_type": "...",
+  "product_type": "VASE",
+  "shape": "not visible",
+  "surface_and_glaze": "not visible",
+  "decoration_layout": "not visible",
+  "decoration_elements": [],
+  "composition": "not visible",
   "main_colors": [],
   "visual_features": [],
-  "pattern_candidates": []
+  "pattern_candidates": [
+    {
+      "pattern_id": "P01",
+      "confidence": "high"
+    }
+  ]
 }
 ```
 
@@ -922,7 +920,7 @@ POST /api/generate-content
 
 ```json
 {
-  "product": {},
+  "product": { "type": "VASE", "colors": ["BLUE"], "visual_features": ["FLORAL_DECORATION"] },
   "confirmed_pattern_id": "P01",
   "artisan_story": "...",
   "target_language": "vi"
@@ -990,7 +988,6 @@ type GeneratedContent = {
   shortDescription: string;
   productDescription: string;
   artisanStory: string;
-  culturalNote: string;
   socialPost: string;
 };
 ```
@@ -1627,3 +1624,19 @@ AI는
 
 > **AI가 장인을 대신하는 서비스가 아니라  
 > 장인이 가진 지식과 작품의 이야기를 더 쉽게 전달하도록 돕는 서비스다.**
+
+---
+
+# 48. 관람객 공개 화면
+
+- `/exhibit/[id]`: 공개한 사진, 상품명, 짧은 소개, 상세 설명, 작가 이야기, DB 참고 자료를 읽기 전용으로 표시한다.
+- 결과 화면의 “확인한 결과 공개하기”로 최초 공개한다. 공개 후 결과 화면에서 생성된 변경 내용은 500ms 지연 후 저장하고, 관람객은 3초마다 다시 읽는다. 입력 중인 초안은 공개하지 않는다.
+- VI/EN/KO는 이미 공개된 결과만 선택한다. 없는 언어는 미공개 안내를 표시하며 관람객 화면은 AI를 호출하지 않는다.
+- `POST /api/exhibits`: `{ imageId, patternId, content }`를 저장한다. content는 언어별 GeneratedContent다. 응답은 `{ id, imageId, patternId, content, updatedAt, token }`이다.
+- `GET /api/exhibits/[id]`: token/tokenHash 없이 공개 결과를 반환한다. 캐시는 `no-store`다.
+- `PUT /api/exhibits/[id]`: 같은 본문과 `Authorization: Bearer <token>`으로 갱신한다. imageId는 바꿀 수 없다. 잘못된 권한은 403이다.
+- 수정 토큰은 제작자 브라우저 sessionStorage에만 보관한다. 서버는 SHA-256 해시만 저장한다. 세션을 잃으면 기존 공개 주소의 수정 권한 복구 기능은 없다.
+- `POTTERY_DATA_DIR`의 images/exhibits 폴더에 저장한다. 미설정 시 `.pottery-data`다. 상시 배포는 쓰기 가능한 영구 볼륨을 연결한 단일 Node 서버가 필요하다. 서버리스 임시 파일시스템으로 영구 보존을 보장하지 않는다.
+- 기존 임시 이미지 파일은 조회 시 새 저장소로 복사한다. 공개 이미지가 자동 만료되지 않도록 기존 2시간 삭제를 제거했다.
+- 로컬 실행: `npm run build` 후 `npm run start -- --hostname 127.0.0.1 --port 3100`.
+- 이 공개 저장소는 수동 조사한 patterns.json의 변경을 런타임 편집하지 않는다. DB 파일 변경은 재빌드/재배포가 필요하다.

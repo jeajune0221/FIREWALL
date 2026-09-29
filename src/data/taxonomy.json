@@ -1,0 +1,69 @@
+{
+  "product_types": [
+    { "id": "VASE", "vi": "Bình hoa", "en": "Vase", "ko": "화병" },
+    { "id": "BOWL", "vi": "Bát", "en": "Bowl", "ko": "그릇" },
+    { "id": "PLATE", "vi": "Đĩa", "en": "Plate", "ko": "접시" },
+    { "id": "CUP", "vi": "Cốc / Chén", "en": "Cup", "ko": "잔" },
+    { "id": "JAR", "vi": "Hũ", "en": "Jar", "ko": "항아리" },
+    { "id": "TEAPOT", "vi": "Ấm trà", "en": "Teapot", "ko": "주전자" },
+    { "id": "FIGURINE", "vi": "Tượng nhỏ", "en": "Figurine", "ko": "조각상" },
+    { "id": "OTHER", "vi": "Loại khác", "en": "Other", "ko": "기타" },
+    { "id": "UNKNOWN", "vi": "Chưa xác định", "en": "Unknown", "ko": "알 수 없음" }
+  ],
+  "colors": [
+    { "id": "WHITE", "vi": "Trắng", "en": "White", "ko": "흰색", "hex": "#FFFFFF" },
+    { "id": "BLACK", "vi": "Đen", "en": "Black", "ko": "검정", "hex": "#1A1A1A" },
+    { "id": "GRAY", "vi": "Xám", "en": "Gray", "ko": "회색", "hex": "#9AA0A0" },
+    { "id": "BLUE", "vi": "Xanh lam", "en": "Blue", "ko": "파랑", "hex": "#2E5C8A" },
+    { "id": "GREEN", "vi": "Xanh lá", "en": "Green", "ko": "초록", "hex": "#3F7A52" },
+    { "id": "RED", "vi": "Đỏ", "en": "Red", "ko": "빨강", "hex": "#B4392C" },
+    { "id": "YELLOW", "vi": "Vàng", "en": "Yellow", "ko": "노랑", "hex": "#D9A93C" },
+    { "id": "BROWN", "vi": "Nâu", "en": "Brown", "ko": "갈색", "hex": "#7A5540" },
+    { "id": "BEIGE", "vi": "Be", "en": "Beige", "ko": "베이지", "hex": "#D9CDB8" },
+    { "id": "PURPLE", "vi": "Tím", "en": "Purple", "ko": "보라", "hex": "#6B4C7A" }
+  ],
+  "visual_features": [
+    {
+      "id": "FLORAL_DECORATION",
+      "vi": "Hoa văn hoa lá",
+      "en": "Floral decoration",
+      "ko": "꽃 장식"
+    },
+    {
+      "id": "GEOMETRIC_DECORATION",
+      "vi": "Hoa văn hình học",
+      "en": "Geometric decoration",
+      "ko": "기하 장식"
+    },
+    {
+      "id": "ANIMAL_DECORATION",
+      "vi": "Hoa văn động vật",
+      "en": "Animal decoration",
+      "ko": "동물 장식"
+    },
+    {
+      "id": "SYMMETRICAL_PATTERN",
+      "vi": "Hoa văn đối xứng",
+      "en": "Symmetrical pattern",
+      "ko": "대칭 문양"
+    },
+    {
+      "id": "GLOSSY_SURFACE",
+      "vi": "Bề mặt bóng",
+      "en": "Glossy surface",
+      "ko": "광택 표면"
+    },
+    {
+      "id": "MATTE_SURFACE",
+      "vi": "Bề mặt mờ",
+      "en": "Matte surface",
+      "ko": "무광 표면"
+    },
+    {
+      "id": "RELIEF_DECORATION",
+      "vi": "Hoa văn nổi",
+      "en": "Relief decoration",
+      "ko": "양각 장식"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+const ts = require(process.cwd() + '/node_modules/typescript');
+const fs = require('node:fs');
+const path = require('node:path');
+const assert = require('node:assert/strict');
+process.env.POTTERY_DATA_DIR = fs.mkdtempSync(path.join(require("node:os").tmpdir(), "pottery-contracts-"));
+const cache = new Map();
+function load(file) {
+ file = path.resolve(file);
+ if(cache.has(file)) return cache.get(file).exports;
+ const module = {exports:{}}; cache.set(file,module);
+ const output=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{jsx:ts.JsxEmit.ReactJSX,module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,esModuleInterop:true}}).outputText;
+ const local=(id)=>{if(!id.startsWith('@/'))return require(id);const base=path.join(process.cwd(),'src',id.slice(2));return id.endsWith('.json')?JSON.parse(fs.readFileSync(base,'utf8')):load(fs.existsSync(base+'.ts')?base+'.ts':fs.existsSync(base+'.tsx')?base+'.tsx':path.join(base,'index.ts'));};
+ new Function('require','module','exports',output)(local,module,module.exports);return module.exports;
+}
+(async()=>{
+ const patterns=load('src/lib/patterns.ts');
+ const data=JSON.parse(fs.readFileSync('src/data/patterns.json','utf8'));
+ assert.equal(patterns.getPatternList().length,20);
+ assert(data.every(p=>p.origin===null&&p.representative_works===null));
+ const bad=structuredClone(data);bad[0].origin={text_ko:'test',text_vi:null,text_en:null,source:null};
+ assert.throws(()=>patterns.validatePatterns(bad),/P01.origin/);
+ bad[0].origin.source={organization:'Test',title:'Test',url:'javascript:alert(1)'};
+ assert.throws(()=>patterns.validatePatterns(bad),/P01.origin/);
+ bad[0].origin.source.url='https://example.org/reference';patterns.validatePatterns(bad);
+ const {VISION_JSON_SCHEMA,buildVisionJsonSchema}=load('src/lib/prompts.ts');
+ assert.deepEqual(buildVisionJsonSchema(['P01','P99']).properties.pattern_candidates.items.properties.pattern_id.enum,['P01','P99','NONE']);
+ function strict(s){if(s.type==='object'){assert.equal(s.additionalProperties,false);assert.deepEqual([...s.required].sort(),Object.keys(s.properties).sort());Object.values(s.properties).forEach(strict)}if(s.items) strict(s.items)}strict(VISION_JSON_SCHEMA);
+ const React=require('react');const {renderToStaticMarkup}=require('react-dom/server');
+ const {PatternSelector}=load('src/components/PatternSelector.tsx');const {copyFor}=load('src/lib/copy.ts');
+ const html=renderToStaticMarkup(React.createElement(PatternSelector,{copy:copyFor('ko'),uiLanguage:'ko',patterns:patterns.getPatternList(),candidates:[{patternId:'P01',confidence:'high'},{patternId:'P02',confidence:'medium'},{patternId:'P03',confidence:'low'},{patternId:'NONE',confidence:'low'}],value:null,onChange:()=>{}}));
+ assert(html.includes('확신 낮음'));assert(html.includes('대나무'));assert(html.includes('출처 있는 참고 자료가 아직 없습니다'));assert.equal((html.match(/role="radio"/g)||[]).length,4);
+ const store=load('src/lib/exhibits.ts');const input=load('src/lib/exhibitInput.ts');
+ assert.throws(()=>input.parseExhibitInput({}),/INVALID/);
+ const content={vi:{productTitle:'Test',shortDescription:'Short',productDescription:'Description',artisanStory:'',socialPost:'Social'}};
+ const payload={imageId:'11111111-1111-4111-8111-111111111111',patternId:'NONE',content};
+ const created=await store.createExhibit(input.parseExhibitInput(payload));
+ const record=await store.readExhibit(created.id);
+ assert(store.canEdit(record,created.token));assert(!store.canEdit(record,'wrong'));
+ assert(!('tokenHash' in store.publicExhibit(record)));assert(!('token' in store.publicExhibit(record)));
+ payload.content.vi.productTitle='Updated';await store.updateExhibit(record,payload);
+ assert.equal((await store.readExhibit(created.id)).content.vi.productTitle,'Updated');
+ console.log('PASS: 20 null reference records, missing/unsafe source rejected, strict nested schema, input validation, edit authorization, public credential exclusion, persistent updates');
+})().catch(e=>{console.error(e);process.exitCode=1});
